@@ -3,6 +3,7 @@ import httpx
 from .config import Config
 
 
+# https://www.kancloud.cn/turing/www-tuling123-com/718227
 async def get_tuling_ai_response(message):
     api = 'http://openapi.tuling123.com/openapi/api/v2'
     params = {
