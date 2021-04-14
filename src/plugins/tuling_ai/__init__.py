@@ -1,10 +1,4 @@
-from nonebot import get_driver
-
-from .config import Config
 from .data_source import get_tuling_ai_response
-
-global_config = get_driver().config
-config = Config(**global_config.dict())
 
 from nonebot import on_command
 from nonebot.log import logger

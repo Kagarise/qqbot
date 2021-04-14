@@ -5,8 +5,6 @@ from .config import Config
 
 async def get_tuling_ai_response(message):
     api = 'http://openapi.tuling123.com/openapi/api/v2'
-    user_id = Config.user_id
-    api_key = Config.api_key
     params = {
         "reqType": 0,
         "perception": {
@@ -15,8 +13,8 @@ async def get_tuling_ai_response(message):
             }
         },
         "userInfo": {
-            "apiKey": api_key,
-            "userId": user_id
+            "apiKey": Config.api_key,
+            "userId": Config.user_id
         }
     }
     data = eval(httpx.post(api, json=params).text)
