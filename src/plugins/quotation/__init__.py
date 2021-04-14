@@ -26,7 +26,7 @@ ys = on_command("影视语录", rule=to_me(), priority=1)
 sc = on_command("诗词语录", rule=to_me(), priority=1)
 wyy = on_command("网易云", rule=to_me(), priority=1)
 zx = on_command("哲学语录", rule=to_me(), priority=1)
-djl = on_command("抖机灵", rule=to_me(), priority=1)
+djl = on_command("//抖机灵", rule=to_me(), priority=1)
 
 
 @quotation.handle()
