@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 import nonebot
 from nonebot.log import default_format, logger
 from nonebot.adapters.cqhttp import Bot as CQHTTPBot
