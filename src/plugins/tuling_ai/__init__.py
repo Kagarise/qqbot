@@ -1,3 +1,5 @@
+import random
+
 from .data_source import get_tuling_ai_response
 
 from nonebot import on_command
@@ -13,5 +15,8 @@ tuling_ai = on_command("", rule=to_me(), priority=5)
 async def handle(bot: Bot, event: Event, state: T_State):
     state['message'] = str(event.get_message()).strip()
     logger.success(f'tuling_ai: {event}\n')
-    response = await get_tuling_ai_response(state['message'])
-    await tuling_ai.send(response)
+    if state['message'] == "":
+        await tuling_ai.send(random.choice(["怎么了？", "咋住了？", "又想看涩图了？", "我是你爹"]))
+    else:
+        response = await get_tuling_ai_response(state['message'])
+        await tuling_ai.send(response)
