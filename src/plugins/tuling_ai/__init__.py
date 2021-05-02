@@ -1,6 +1,4 @@
-import random
-
-from .data_source import get_tuling_ai_response
+from .data_source import get_tuling_ai_response, get_none_response
 
 from nonebot import on_command
 from nonebot.log import logger
@@ -16,7 +14,8 @@ async def handle(bot: Bot, event: Event, state: T_State):
     state['message'] = str(event.get_message()).strip()
     logger.success(f'tuling_ai: {event}\n')
     if state['message'] == "":
-        await tuling_ai.send(random.choice(["怎么了？", "咋住了？", "又想看涩图了？", "我是你爹"]))
+        response = await get_none_response()
+        await tuling_ai.send(response)
     else:
         response = await get_tuling_ai_response(state['message'])
         await tuling_ai.send(response)

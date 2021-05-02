@@ -1,6 +1,11 @@
+import random
 import httpx
 
 from .config import Config
+
+
+async def get_none_response():
+    return random.choice(Config.response)
 
 
 # https://www.kancloud.cn/turing/www-tuling123-com/718227
