@@ -1,6 +1,6 @@
-from .config import Config
-
 import random
+
+from .config import Config
 
 
 async def get_setu_url():
@@ -17,9 +17,3 @@ def get_file_name():
         for item in filelist:
             f.write(f'"{item}",\n')
         f.write(']')
-
-
-if __name__ == "__main__":
-    # get_file_name()
-    # print(linecache.getline(Config.FILE_NAME, Config.FILE_CNT))
-    pass

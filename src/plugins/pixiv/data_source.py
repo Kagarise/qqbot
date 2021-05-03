@@ -1,5 +1,4 @@
 import random
-
 import httpx
 
 from .config import Config

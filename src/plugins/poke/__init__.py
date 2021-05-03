@@ -3,7 +3,7 @@ from nonebot.log import logger
 from nonebot.rule import to_me
 from nonebot.adapters import Bot, Event
 
-from src.plugins.poke.data_source import get_poke_response
+from .data_source import get_poke_response
 
 poke = on_notice(rule=to_me(), priority=1)
 

@@ -5,7 +5,7 @@ from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import Message
 
-from .data_source import p_search, get_illust_info, p_rank, p_user
+from .data_source import get_illust_info, p_search, p_rank, p_user
 
 pid = on_command("pid", rule=to_me(), priority=1)
 psearch = on_command("psearch", aliases={"ps"}, rule=to_me(), priority=1)
@@ -71,7 +71,7 @@ async def handle_pr(bot: Bot, event: Event, state: T_State):
 async def handle_pr_got(bot: Bot, event: Event, state: T_State):
     try:
         rank = int(state["rank"]) - 1
-        if 0 < rank < 20:
+        if 0 <= rank < 20:
             data = await p_rank(rank)
             await prank.send(f'''id:{data['id']}
 title:{data['title']}

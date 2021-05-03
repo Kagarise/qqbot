@@ -1,10 +1,10 @@
-from .data_source import get_tuling_ai_response, get_none_response
-
 from nonebot import on_command
 from nonebot.log import logger
 from nonebot.rule import to_me
 from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
+
+from .data_source import get_tuling_ai_response, get_none_response
 
 tuling_ai = on_command("", rule=to_me(), priority=5)
 

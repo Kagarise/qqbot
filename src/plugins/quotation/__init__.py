@@ -1,10 +1,10 @@
-from .config import Config
-from .data_source import get_quotation
-
 from nonebot import on_command
 from nonebot.log import logger
 from nonebot.rule import to_me
 from nonebot.adapters import Bot, Event
+
+from .data_source import get_quotation
+from .config import Config
 
 quotation = on_command("quotation", aliases={'语录'}, rule=to_me())
 twqh = on_command("土味情话", rule=to_me(), priority=1)
