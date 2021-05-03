@@ -17,15 +17,30 @@ async def get_illust_info(id: int, mode="original", url_only=True):
             url = data['meta_single_page']['original_image_url']
         else:
             url = data['meta_pages'][0]['image_urls'][mode]
+        url = url.replace('i.pximg.net', Config.proxy)
         if url_only:
             return f'{Config.pic_api}{url}'
         else:
+            for tag in data['tags']:
+                if tag['name'] == 'R-18':
+                    return {
+                        'state': 'warning',
+                        'id': data['id'],
+                        'title': data['title'],
+                        'user_id': data['user']['id'],
+                        'user_name': data['user']['name'],
+                        # 'url': f'{Config.pic_api}{url}',
+                        'url': url,
+                        'msg': '太涩了，不给看'
+                    }
             return {
+                'state': 'success',
                 'id': data['id'],
                 'title': data['title'],
                 'user_id': data['user']['id'],
                 'user_name': data['user']['name'],
-                'url': f'{Config.pic_api}{url}'
+                # 'url': f'{Config.pic_api}{url}',
+                'url': url
             }
     except:
         return None

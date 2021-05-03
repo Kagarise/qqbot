@@ -51,10 +51,17 @@ async def handle_ps_got(bot: Bot, event: Event, state: T_State):
     try:
         key = state["key"]
         data = await p_search(key)
-        await psearch.send(f'''id:{data['id']}
+        if data['state'] == 'success':
+            await psearch.send(f'''id:{data['id']}
 title:{data['title']}
 user_id:{data['user_id']}
 user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]'))
+        elif data['state'] == 'warning':
+            await psearch.send(f'''id:{data['id']}
+title:{data['title']}
+user_id:{data['user_id']}
+user_name:{data['user_name']}
+{data["msg"]}''' + Message("[CQ:face,id=277]"))
     except:
         await psearch.send("诶嘿，搜索出错了")
 
