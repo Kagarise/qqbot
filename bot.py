@@ -10,6 +10,9 @@ driver.register_adapter("cqhttp", CQHTTPBot)
 
 nonebot.load_builtin_plugins()
 nonebot.load_plugin('nonebot_plugin_apscheduler')
+# nonebot.load_plugin('nonebot_plugin_songpicker2')
+nonebot.load_plugin('nonebot_plugin_picsearcher')
+nonebot.load_plugin('nonebot_plugin_biliav')
 nonebot.load_from_toml("pyproject.toml")
 
 logger.add("./logs/{time}.log",

@@ -1,3 +1,4 @@
+- 创建项目请参考NoneBot官方文档<https://v2.nonebot.dev/>
 ## 帮助文档
 <http://kagarise.cn/2021/05/01/bot/>
 
