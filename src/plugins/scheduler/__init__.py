@@ -40,7 +40,7 @@ async def wzdd_on_21_30():
     try:
         bot = nonebot.get_bots()[Config.me]
         logger.success(f"{bot}:wzdd")
-        msg = '''王者dd''' + Message('[CQ:face,id=6]')
+        msg = '王者dd' + Message('[CQ:face,id=6]')
         await bot.call_api('send_group_msg', **{
             'message': msg,
             'user_id': Config.main_group
