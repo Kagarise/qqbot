@@ -9,21 +9,23 @@ from nonebot.adapters.cqhttp import Message
 from .config import Config
 from ..pixiv.data_source import p_rank
 from ..cat.data_source import get_cat_url, get_dog_url
+from ..weather.data_source import get_weather_detail
 
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 
-@scheduler.scheduled_job("cron", hour="11", minute="30", id="pr1")
-async def pr1_on_11_30():
+@scheduler.scheduled_job("cron", hour="11", minute="50", id="pr")
+async def pr1_on_11_50():
     try:
         bot = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-pr1")
-        for rank in range(3):
+        logger.success(f"{Config.me}:scheduler-pr")
+        for rank in range(5):
             data = await p_rank(rank)
-            msg = f'''id:{data['id']}
-    title:{data['title']}
-    user_id:{data['user_id']}
-    user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
+            msg = f'''rank:{rank + 1}
+id:{data['id']}
+title:{data['title']}
+user_id:{data['user_id']}
+user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
             # await bot.call_api('send_private_msg', **{
             #     'message': msg,
             #     'user_id': Config.superuser
@@ -33,7 +35,7 @@ async def pr1_on_11_30():
                 'group_id': Config.test_group
             })
     except:
-        logger.error("定时任务pr1失败")
+        logger.error("定时任务pr失败")
 
 
 # @scheduler.scheduled_job("cron", hour="21", minute="30", id="wzdd")
@@ -50,8 +52,8 @@ async def pr1_on_11_30():
 #         logger.error("定时任务wzdd失败")
 
 
-@scheduler.scheduled_job("cron", hour="9,10,11,12,13,14,15,16,17,18,19,20,21,22", id="animal")
-async def animal_on_9_00_to_22_00():
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", id="animal")
+async def animal_on_7_00_to_23_00():
     try:
         bot = nonebot.get_bots()[Config.me]
         logger.success(f"{Config.me}:scheduler-animal")
@@ -70,3 +72,41 @@ async def animal_on_9_00_to_22_00():
         })
     except:
         logger.error("定时任务animal失败")
+
+
+@scheduler.scheduled_job("cron", hour="7", minute="20", id="weather")
+async def weather_on_7_20():
+    try:
+        bot = nonebot.get_bots()[Config.me]
+        logger.success(f"{Config.me}:scheduler-weather")
+        data = await get_weather_detail()
+        msg = ""
+        for key, value in data.items():
+            if value:
+                msg += f'{key}:{value}\n'
+        msg = msg.strip()
+        await bot.call_api('send_group_msg', **{
+            'message': msg,
+            'group_id': Config.test_group
+        })
+    except:
+        logger.error("定时任务weather失败")
+
+
+@scheduler.scheduled_job("cron", hour="11,18", minute="30", id="weather_now")
+async def weather_on_11_30_and_18_30():
+    try:
+        bot = nonebot.get_bots()[Config.me]
+        logger.success(f"{Config.me}:scheduler-weather_now")
+        data = await get_weather_detail(daily=False)
+        msg = ""
+        for key, value in data.items():
+            if value:
+                msg += f'{key}:{value}\n'
+        msg = msg.strip()
+        await bot.call_api('send_group_msg', **{
+            'message': msg,
+            'group_id': Config.test_group
+        })
+    except:
+        logger.error("定时任务weather_now失败")
