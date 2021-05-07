@@ -10,6 +10,7 @@ from .config import Config
 from ..pixiv.data_source import p_rank
 from ..cat.data_source import get_cat_url, get_dog_url
 from ..weather.data_source import get_weather_detail
+from ..bilibili.data_source import get_dd_list_status
 
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
@@ -110,3 +111,27 @@ async def weather_on_11_30_and_18_30():
         })
     except:
         logger.error("定时任务weather_now失败")
+
+
+live_status = dict()
+
+
+@scheduler.scheduled_job("cron", minute="*/1", id="live_dd")
+async def live_dd_each_10_second():
+    try:
+        bot = nonebot.get_bots()[Config.me]
+        datas = get_dd_list_status()
+        for data in datas:
+            if data['live_status']:
+                if data['room_id'] not in live_status or data['live_time'] != live_status[data['room_id']]:
+                    live_status[data['room_id']] = data['live_time']
+                    msg = f'''{data["name"]}开播啦！
+房间号：{data["room_id"]}
+标题：{data["title"]}''' + Message(f'[CQ:image,file={data["img"]}]')
+                    await bot.call_api('send_group_msg', **{
+                        'message': msg,
+                        'group_id': Config.test_group
+                    })
+                    logger.success(f'{Config.me}:scheduler-weather_now:{data["name"]}开播啦！')
+    except:
+        logger.error("定时任务live_dd失败")
