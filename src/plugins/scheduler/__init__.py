@@ -75,11 +75,11 @@ async def animal_on_7_00_to_23_00():
         logger.error("定时任务animal失败")
 
 
-@scheduler.scheduled_job("cron", hour="7", minute="20", id="weather")
+@scheduler.scheduled_job("cron", hour="7", minute="20", id="weather_daily")
 async def weather_on_7_20():
     try:
         bot = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-weather")
+        logger.success(f"{Config.me}:scheduler-weather_daily")
         data = await get_weather_detail()
         msg = ""
         for key, value in data.items():
@@ -91,7 +91,7 @@ async def weather_on_7_20():
             'group_id': Config.test_group
         })
     except:
-        logger.error("定时任务weather失败")
+        logger.error("定时任务weather_daily失败")
 
 
 @scheduler.scheduled_job("cron", hour="11,18", minute="30", id="weather_now")
