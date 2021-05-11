@@ -12,7 +12,7 @@ async def get_illust_info(id: int, mode="original", url_only=True):
         'id': id
     }
     try:
-        data = httpx.get(api, params=params).json()['illust']
+        data = httpx.get(api, params=params, timeout=5).json()['illust']
         if data['meta_pages'] == []:
             url = data['meta_single_page']['original_image_url']
         else:
@@ -54,7 +54,7 @@ async def p_search(key):
         'bookmark_num_min': 1000
     }
     try:
-        data = httpx.get(api, params=params).json()['illusts']
+        data = httpx.get(api, params=params, timeout=5).json()['illusts']
         id = random.choice(data)['id']
         data = await get_illust_info(id, url_only=False)
         return data
@@ -69,7 +69,7 @@ async def p_rank(rank, mode="day"):
         'mode': mode
     }
     try:
-        data = httpx.get(api, params=params).json()['illusts']
+        data = httpx.get(api, params=params, timeout=5).json()['illusts']
         id = data[rank]['id']
         data = await get_illust_info(id, url_only=False)
         return data
@@ -84,7 +84,7 @@ async def p_user(user_id, limit=3):
         'id': user_id
     }
     try:
-        data = httpx.get(api, params=params).json()['illusts']
+        data = httpx.get(api, params=params, timeout=5).json()['illusts']
         datas = []
         for idx in range(min(limit, len(data))):
             datas.append(await get_illust_info(data[idx]['id'], url_only=False))
