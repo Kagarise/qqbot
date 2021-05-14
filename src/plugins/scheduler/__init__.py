@@ -15,7 +15,7 @@ from ..bilibili.data_source import get_dd_list_status
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 
-@scheduler.scheduled_job("cron", hour="11", minute="50", id="pr")
+@scheduler.scheduled_job("cron", hour="11", minute="50", second="0", id="pr")
 async def pr_on_11_50():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
@@ -53,7 +53,8 @@ user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
 #         logger.error("定时任务wzdd失败")
 
 
-@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", second="30", id="animal")
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="0", second="30",
+                         id="animal")
 async def animal_on_7_00_to_23_00():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
