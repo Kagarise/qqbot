@@ -22,7 +22,10 @@ async def handle_hand_painting_got(bot: Bot, event: Event, state: T_State):
         if img[0].type == "image":
             await hand_painting.send("转化中")
             img_url = await get_hand_painting(img[0].data["url"])
-            await hand_painting.send(Message(f'[CQ:image,file={img_url}]'))
+            if img_url is None:
+                await hand_painting.send("出错了，请重新开始")
+            else:
+                await hand_painting.send(Message(f'[CQ:image,file={img_url}]'))
         else:
             await hand_painting.send("这是啥？")
     except:
