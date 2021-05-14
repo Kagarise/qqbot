@@ -1,5 +1,4 @@
 import httpx
-from nonebot import logger
 
 from .config import Config
 
