@@ -53,7 +53,7 @@ user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
 #         logger.error("定时任务wzdd失败")
 
 
-@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", id="animal")
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", second="30", id="animal")
 async def animal_on_7_00_to_23_00():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
@@ -75,7 +75,7 @@ async def animal_on_7_00_to_23_00():
         logger.error("定时任务animal失败")
 
 
-@scheduler.scheduled_job("cron", hour="7", minute="20", id="weather_daily")
+@scheduler.scheduled_job("cron", hour="7", minute="20", second="45", id="weather_daily")
 async def weather_on_7_20():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
@@ -94,7 +94,7 @@ async def weather_on_7_20():
         logger.error("定时任务weather_daily失败")
 
 
-@scheduler.scheduled_job("cron", hour="11,18", minute="30", id="weather_now")
+@scheduler.scheduled_job("cron", hour="11,18", minute="30", second="45", id="weather_now")
 async def weather_on_11_30_and_18_30():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
@@ -116,7 +116,7 @@ async def weather_on_11_30_and_18_30():
 live_dd_status = dict()
 
 
-@scheduler.scheduled_job("cron", second="0", id="live_dd")
+@scheduler.scheduled_job("cron", second="55", id="live_dd")
 async def live_dd_each_1_minute():
     dd_list = [77386, 34027]
     try:
@@ -141,7 +141,7 @@ async def live_dd_each_1_minute():
 main_group_dd_status = dict()
 
 
-@scheduler.scheduled_job("cron", second="30", id="main_group_dd")
+@scheduler.scheduled_job("cron", second="50", id="main_group_dd")
 async def main_group_dd_each_1_minute():
     dd_list = [22314455]
     try:
