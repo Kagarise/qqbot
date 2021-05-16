@@ -1,6 +1,6 @@
 - 创建项目请参考NoneBot官方文档<https://v2.nonebot.dev/>
 ## 帮助文档
-<http://kagarise.cn/2021/05/01/bot/>
+<http://flora.love/2021/05/01/bot/>
 
 - 在src/plugins下的每个package中，都应含有config.py文件，用来存储一些配置信息或私密信息。
 ```python
