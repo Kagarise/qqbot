@@ -119,7 +119,7 @@ live_dd_status = dict()
 
 @scheduler.scheduled_job("cron", second="55", id="live_dd")
 async def live_dd_each_1_minute():
-    dd_list = [77386, 34027]
+    dd_list = [34027, 23105590]
     try:
         Bot_me = nonebot.get_bots()[Config.me]
         datas = await get_dd_list_status(dd_list=dd_list)

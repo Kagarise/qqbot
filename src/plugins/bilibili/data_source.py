@@ -22,19 +22,19 @@ async def set_proxy():
 
 
 async def get_user_info(user_id):
-    await set_proxy()
+    # await set_proxy()
     data = user.get_user_info(uid=user_id)
     return data
 
 
 async def live_data(room_id):
-    await set_proxy()
+    # await set_proxy()
     data = live.get_room_play_info(room_display_id=room_id)
     return data
 
 
 async def get_room_info(room_id):
-    await set_proxy()
+    # await set_proxy()
     data = live.get_room_info(room_real_id=room_id)
     return data
 

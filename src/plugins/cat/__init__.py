@@ -24,16 +24,3 @@ async def dog_handle(bot: Bot, event: Event):
     logger.success(f'dog: {event}\n')
     img_url = await get_dog_url()
     await dog.send(Message(f'[CQ:image,file={img_url}]'))
-
-# from nonebot import require
-#
-# scheduler = require("nonebot_plugin_apscheduler").scheduler
-#
-#
-# @scheduler.scheduled_job('cron', second='*/1', id='scheduled_cat')
-# async def scheduled_cat():
-#     img_url = await get_cat_url()
-#     logger.success(f"定时发送猫猫图：{img_url}")
-#
-#
-# scheduler.add_job(scheduled_cat, "interval", days=1, id="scheduled_cat")
