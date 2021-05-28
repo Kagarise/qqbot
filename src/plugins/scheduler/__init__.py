@@ -7,6 +7,7 @@ from nonebot.log import logger
 from nonebot.adapters.cqhttp import Message
 
 from .config import Config
+from ..cosplay import get_cosplay_url, get_appmiu_url
 from ..pixiv.data_source import p_rank
 from ..cat.data_source import get_cat_url, get_dog_url
 from ..weather.data_source import get_weather_detail
@@ -15,28 +16,28 @@ from ..bilibili.data_source import get_dd_list_status
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 
-@scheduler.scheduled_job("cron", hour="11", minute="50", second="0", id="pr")
-async def pr_on_11_50():
-    try:
-        Bot_me = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-pr")
-        for rank in range(3):
-            data = await p_rank(rank)
-            msg = f'''rank:{rank + 1}
-id:{data['id']}
-title:{data['title']}
-user_id:{data['user_id']}
-user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
-            # await bot.call_api('send_private_msg', **{
-            #     'message': msg,
-            #     'user_id': Config.superuser
-            # })
-            await Bot_me.call_api('send_group_msg', **{
-                'message': msg,
-                'group_id': Config.test_group
-            })
-    except:
-        logger.error("定时任务pr失败")
+# @scheduler.scheduled_job("cron", hour="11", minute="50", second="0", id="pr")
+# async def pr_on_11_50():
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         logger.success(f"{Config.me}:scheduler-pr")
+#         for rank in range(3):
+#             data = await p_rank(rank)
+#             msg = f'''rank:{rank + 1}
+# id:{data['id']}
+# title:{data['title']}
+# user_id:{data['user_id']}
+# user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
+#             # await bot.call_api('send_private_msg', **{
+#             #     'message': msg,
+#             #     'user_id': Config.superuser
+#             # })
+#             await Bot_me.call_api('send_group_msg', **{
+#                 'message': msg,
+#                 'group_id': Config.test_group
+#             })
+#     except:
+#         logger.error("定时任务pr失败")
 
 
 # @scheduler.scheduled_job("cron", hour="21", minute="30", id="wzdd")
@@ -53,9 +54,11 @@ user_name:{data['user_name']}''' + Message(f'[CQ:image,file={data["url"]}]')
 #         logger.error("定时任务wzdd失败")
 
 
-@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="0", second="30",
+# @scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="0", second="30",
+#                          id="animal")
+@scheduler.scheduled_job("cron", hour="8,12,18,22", minute="0", second="30",
                          id="animal")
-async def animal_on_7_00_to_23_00():
+async def animal():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
         logger.success(f"{Config.me}:scheduler-animal")
@@ -76,7 +79,64 @@ async def animal_on_7_00_to_23_00():
         logger.error("定时任务animal失败")
 
 
-@scheduler.scheduled_job("cron", hour="7", minute="20", second="45", id="weather_daily")
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="6", second="30",
+                         id="cosplay")
+async def cosplay():
+    try:
+        Bot_me = nonebot.get_bots()[Config.me]
+        logger.success(f"{Config.me}:scheduler-cosplay")
+        img_url = await get_cosplay_url()
+        if img_url:
+            msg = Message(f'[CQ:image,file={img_url}]')
+        else:
+            msg = "诶嘿，出错了"
+        await Bot_me.call_api('send_group_msg', **{
+            'message': msg,
+            'group_id': Config.test_group
+        })
+    except:
+        logger.error("定时任务cosplay失败")
+
+
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="26", second="30",
+                         id="jk")
+async def jk():
+    try:
+        Bot_me = nonebot.get_bots()[Config.me]
+        logger.success(f"{Config.me}:scheduler-jk")
+        img_url = await get_cosplay_url(cls="jkfun")
+        if img_url:
+            msg = Message(f'[CQ:image,file={img_url}]')
+        else:
+            msg = "诶嘿，出错了"
+        await Bot_me.call_api('send_group_msg', **{
+            'message': msg,
+            'group_id': Config.test_group
+        })
+    except:
+        logger.error("定时任务jk失败")
+
+
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="46", second="30",
+                         id="appmiu")
+async def appmiu():
+    try:
+        Bot_me = nonebot.get_bots()[Config.me]
+        logger.success(f"{Config.me}:scheduler-appmiu")
+        img_url = await get_appmiu_url()
+        if img_url:
+            msg = Message(f'[CQ:image,file={img_url}]')
+        else:
+            msg = "诶嘿，出错了"
+        await Bot_me.call_api('send_group_msg', **{
+            'message': msg,
+            'group_id': Config.test_group
+        })
+    except:
+        logger.error("定时任务appmiu失败")
+
+
+@scheduler.scheduled_job("cron", hour="7", minute="30", second="45", id="weather_daily")
 async def weather_on_7_20():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
@@ -113,53 +173,52 @@ async def weather_on_11_30_and_18_30():
     except:
         logger.error("定时任务weather_now失败")
 
-
-live_dd_status = dict()
-
-
-@scheduler.scheduled_job("cron", second="55", id="live_dd")
-async def live_dd_each_1_minute():
-    dd_list = [34027, 23105590]
-    try:
-        Bot_me = nonebot.get_bots()[Config.me]
-        datas = await get_dd_list_status(dd_list=dd_list)
-        for data in datas:
-            if data['live_status']:
-                if data['room_id'] not in live_dd_status or data['live_time'] != live_dd_status[data['room_id']]:
-                    live_dd_status[data['room_id']] = data['live_time']
-                    msg = f'''{data["name"]}开播啦！
-房间号：{data["room_id"]}
-标题：{data["title"]}''' + Message(f'[CQ:image,file={data["img"]}]')
-                    await Bot_me.call_api('send_group_msg', **{
-                        'message': msg,
-                        'group_id': Config.test_group
-                    })
-                    logger.success(f'{Config.me}:scheduler-live_dd:{data["name"]}开播啦！')
-    except:
-        logger.error("定时任务live_dd失败")
-
-
-main_group_dd_status = dict()
-
-
-@scheduler.scheduled_job("cron", second="50", id="main_group_dd")
-async def main_group_dd_each_1_minute():
-    dd_list = [22314455]
-    try:
-        Bot_me = nonebot.get_bots()[Config.me]
-        datas = await get_dd_list_status(dd_list=dd_list)
-        for data in datas:
-            if data['live_status']:
-                if data['room_id'] not in main_group_dd_status or data['live_time'] != main_group_dd_status[
-                    data['room_id']]:
-                    main_group_dd_status[data['room_id']] = data['live_time']
-                    msg = f'''{data["name"]}开播啦！
-房间号：{data["room_id"]}
-标题：{data["title"]}''' + Message(f'[CQ:image,file={data["img"]}]')
-                    await Bot_me.call_api('send_group_msg', **{
-                        'message': msg,
-                        'group_id': Config.main_group
-                    })
-                    logger.success(f'{Config.me}:scheduler-main_group_dd:{data["name"]}开播啦！')
-    except:
-        logger.error("定时任务main_group_dd失败")
+# live_dd_status = dict()
+#
+#
+# @scheduler.scheduled_job("cron", second="55", id="live_dd")
+# async def live_dd_each_1_minute():
+#     dd_list = [34027, 23105590]
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         datas = await get_dd_list_status(dd_list=dd_list)
+#         for data in datas:
+#             if data['live_status']:
+#                 if data['room_id'] not in live_dd_status or data['live_time'] != live_dd_status[data['room_id']]:
+#                     live_dd_status[data['room_id']] = data['live_time']
+#                     msg = f'''{data["name"]}开播啦！
+# 房间号：{data["room_id"]}
+# 标题：{data["title"]}''' + Message(f'[CQ:image,file={data["img"]}]')
+#                     await Bot_me.call_api('send_group_msg', **{
+#                         'message': msg,
+#                         'group_id': Config.test_group
+#                     })
+#                     logger.success(f'{Config.me}:scheduler-live_dd:{data["name"]}开播啦！')
+#     except:
+#         logger.error("定时任务live_dd失败")
+#
+#
+# main_group_dd_status = dict()
+#
+#
+# @scheduler.scheduled_job("cron", second="50", id="main_group_dd")
+# async def main_group_dd_each_1_minute():
+#     dd_list = [22314455]
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         datas = await get_dd_list_status(dd_list=dd_list)
+#         for data in datas:
+#             if data['live_status']:
+#                 if data['room_id'] not in main_group_dd_status or data['live_time'] != main_group_dd_status[
+#                     data['room_id']]:
+#                     main_group_dd_status[data['room_id']] = data['live_time']
+#                     msg = f'''{data["name"]}开播啦！
+# 房间号：{data["room_id"]}
+# 标题：{data["title"]}''' + Message(f'[CQ:image,file={data["img"]}]')
+#                     await Bot_me.call_api('send_group_msg', **{
+#                         'message': msg,
+#                         'group_id': Config.main_group
+#                     })
+#                     logger.success(f'{Config.me}:scheduler-main_group_dd:{data["name"]}开播啦！')
+#     except:
+#         logger.error("定时任务main_group_dd失败")
