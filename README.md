@@ -2,6 +2,7 @@
 ## 帮助文档
 <http://flora.love/2021/05/01/bot/>
 
+- 部分功能为自己搭建的API接口，详情可见<https://github.com/Kagarise/API>
 - 在src/plugins下的每个package中，都应含有config.py文件，用来存储一些配置信息或私密信息。
 ```python
 # 如下以src/plugins/cat/config.py为例
