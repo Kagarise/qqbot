@@ -7,7 +7,7 @@ from nonebot.log import logger
 from nonebot.adapters.cqhttp import Message
 
 from .config import Config
-from ..cosplay import get_cosplay_url, get_appmiu_url
+from ..cosplay.data_source import get_cosplay_url, get_img_url
 from ..pixiv.data_source import p_rank
 from ..cat.data_source import get_cat_url, get_dog_url
 from ..weather.data_source import get_weather_detail
@@ -56,38 +56,94 @@ scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 # @scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="0", second="30",
 #                          id="animal")
-@scheduler.scheduled_job("cron", hour="8,12,18,22", minute="0", second="30",
-                         id="animal")
-async def animal():
-    try:
-        Bot_me = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-animal")
-        choice = ['猫猫', '狗狗']
-        choice = random.choice(choice)
-        if choice == '猫猫':
-            img_url = await get_cat_url()
-        elif choice == '狗狗':
-            img_url = await get_dog_url()
-        else:
-            img_url = None
-        msg = f'已经{datetime.datetime.now().hour}点了，来看{choice}图叭' + Message(f'[CQ:image,file={img_url}]')
-        await Bot_me.call_api('send_group_msg', **{
-            'message': msg,
-            'group_id': Config.test_group
-        })
-    except:
-        logger.error("定时任务animal失败")
+# @scheduler.scheduled_job("cron", hour="8,12,18,22", minute="0", second="30",
+#                          id="animal")
+# async def animal():
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         logger.success(f"{Config.me}:scheduler-animal")
+#         choice = ['猫猫', '狗狗']
+#         choice = random.choice(choice)
+#         if choice == '猫猫':
+#             img_url = await get_cat_url()
+#         elif choice == '狗狗':
+#             img_url = await get_dog_url()
+#         else:
+#             img_url = None
+#         msg = f'已经{datetime.datetime.now().hour}点了，来看{choice}图叭' + Message(f'[CQ:image,file={img_url}]')
+#         await Bot_me.call_api('send_group_msg', **{
+#             'message': msg,
+#             'group_id': Config.test_group
+#         })
+#     except:
+#         logger.error("定时任务animal失败")
 
 
-@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="6", second="30",
-                         id="cosplay")
-async def cosplay():
+# @scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="16", second="30",
+#                          id="cosplay")
+# async def cosplay():
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         logger.success(f"{Config.me}:scheduler-cosplay")
+#         img_url = await get_cosplay_url()
+#         if img_url:
+#             msg = Message(f'[CQ:image,file={img_url}]')
+#         else:
+#             msg = "诶嘿，出错了"
+#         await Bot_me.call_api('send_group_msg', **{
+#             'message': msg,
+#             'group_id': Config.test_group
+#         })
+#     except:
+#         logger.error("定时任务cosplay失败")
+#
+#
+# @scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="46", second="30",
+#                          id="jk")
+# async def jk():
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         logger.success(f"{Config.me}:scheduler-jk")
+#         img_url = await get_cosplay_url(cls="jkfun")
+#         if img_url:
+#             msg = Message(f'[CQ:image,file={img_url}]')
+#         else:
+#             msg = "诶嘿，出错了"
+#         await Bot_me.call_api('send_group_msg', **{
+#             'message': msg,
+#             'group_id': Config.test_group
+#         })
+#     except:
+#         logger.error("定时任务jk失败")
+
+
+# @scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="46", second="30",
+#                          id="appmiu")
+# async def appmiu():
+#     try:
+#         Bot_me = nonebot.get_bots()[Config.me]
+#         logger.success(f"{Config.me}:scheduler-appmiu")
+#         img_url = await get_appmiu_url()
+#         if img_url:
+#             msg = Message(f'[CQ:image,file={img_url}]')
+#         else:
+#             msg = "诶嘿，出错了"
+#         await Bot_me.call_api('send_group_msg', **{
+#             'message': msg,
+#             'group_id': Config.test_group
+#         })
+#     except:
+#         logger.error("定时任务appmiu失败")
+
+@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="06,26,46", second="30",
+                         id="setu")
+async def setu():
     try:
         Bot_me = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-cosplay")
-        img_url = await get_cosplay_url()
+        logger.success(f"{Config.me}:scheduler-setu")
+        img_url = await get_img_url()
         if img_url:
-            msg = Message(f'[CQ:image,file={img_url}]')
+            msg = Message(f'[CQ:image,file={img_url},cache=0]')
         else:
             msg = "诶嘿，出错了"
         await Bot_me.call_api('send_group_msg', **{
@@ -95,45 +151,7 @@ async def cosplay():
             'group_id': Config.test_group
         })
     except:
-        logger.error("定时任务cosplay失败")
-
-
-@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="26", second="30",
-                         id="jk")
-async def jk():
-    try:
-        Bot_me = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-jk")
-        img_url = await get_cosplay_url(cls="jkfun")
-        if img_url:
-            msg = Message(f'[CQ:image,file={img_url}]')
-        else:
-            msg = "诶嘿，出错了"
-        await Bot_me.call_api('send_group_msg', **{
-            'message': msg,
-            'group_id': Config.test_group
-        })
-    except:
-        logger.error("定时任务jk失败")
-
-
-@scheduler.scheduled_job("cron", hour="7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", minute="46", second="30",
-                         id="appmiu")
-async def appmiu():
-    try:
-        Bot_me = nonebot.get_bots()[Config.me]
-        logger.success(f"{Config.me}:scheduler-appmiu")
-        img_url = await get_appmiu_url()
-        if img_url:
-            msg = Message(f'[CQ:image,file={img_url}]')
-        else:
-            msg = "诶嘿，出错了"
-        await Bot_me.call_api('send_group_msg', **{
-            'message': msg,
-            'group_id': Config.test_group
-        })
-    except:
-        logger.error("定时任务appmiu失败")
+        logger.error("定时任务setu失败")
 
 
 @scheduler.scheduled_job("cron", hour="7", minute="30", second="45", id="weather_daily")

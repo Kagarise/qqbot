@@ -3,7 +3,6 @@ from nonebot.log import logger
 from nonebot.rule import to_me
 from nonebot.typing import T_State
 from nonebot.adapters import Bot, Event
-from nonebot.adapters.cqhttp import Message
 
 from .data_source import get_yourls
 
